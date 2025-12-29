@@ -1,0 +1,9 @@
+reason,count,pct
+blend_resolved_kept,125,37.20238095238095
+blend_modeled_kept,85,25.297619047619047
+low_snr,42,12.5
+chi2_exceeded,39,11.607142857142858
+sigma_exceeded,16,4.761904761904762
+asymmetry_exceeded,11,3.2738095238095237
+contamination_exceeded,0,0.0
+has_edge_flag,0,0.0

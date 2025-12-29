@@ -1,0 +1,13 @@
+{
+  "delta_alpha": -0.00045640379422144016,
+  "delta_alpha_err": 3.139228620018563e-05,
+  "z0": 5.079122697018182e-05,
+  "z0_err": 2.3022908300959772e-06,
+  "jitter": 3.000000018297589e-07,
+  "chi2": 30509.8115572994,
+  "dof": 65,
+  "n_lines": 69,
+  "condition_number": 3.9998615221241396,
+  "orthogonalized": false,
+  "likelihood": "student_t"
+}

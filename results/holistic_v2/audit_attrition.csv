@@ -1,0 +1,7 @@
+stage,description,count,dropped,reason
+S0,Total atomic lines,351,0,
+S1,In E140H range,349,2,OUT_OF_RANGE
+S2,Attempted fits,349,0,NOT_IN_FIT_TABLE
+S3,Fit converged,275,74,FIT_FAILED
+S4,Basic quality,10,265,QUALITY_CUTS
+S5,Gold (current),10,0,ADDITIONAL_CUTS

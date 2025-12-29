@@ -1,0 +1,44 @@
+[2025-12-29 07:17:35] ============================================================
+[2025-12-29 07:17:35] Holistic V2 Pipeline Started
+[2025-12-29 07:17:35] ============================================================
+[2025-12-29 07:17:35] Spectrum: data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_coadd-spec.fits
+[2025-12-29 07:17:35] Atomic table: data/atomic/analysis_lines_clean.csv
+[2025-12-29 07:17:35] Loading spectrum...
+[2025-12-29 07:17:35] Spectrum loaded: 69079 points, 1160.00-1684.99 Å
+[2025-12-29 07:17:35] Loading atomic table...
+[2025-12-29 07:17:35] Atomic table loaded: 351 lines
+[2025-12-29 07:17:35] Lines in E140H range: 349
+[2025-12-29 07:17:35] Estimated z_guess: 0.000077
+[2025-12-29 07:17:35] Building line table...
+[2025-12-29 07:17:35] Lines to fit: 349
+[2025-12-29 07:17:35] Normalizing spectrum...
+[2025-12-29 07:20:08] Spectrum normalized
+[2025-12-29 07:20:08] Fitting lines...
+[2025-12-29 07:22:13] Line fitting complete: 275 fits in 124.9s
+[2025-12-29 07:22:13] Converged: 275, Failed: 74
+[2025-12-29 07:22:13] Selecting analysis and gold sets...
+[2025-12-29 07:22:13] Analysis set: 69 lines
+[2025-12-29 07:22:13] Gold set: 0 lines
+[2025-12-29 07:22:13] Running baseline inference (Student-t, both species)...
+[2025-12-29 07:22:13] Baseline: Δα/α = -4.5640e-04 ± 3.1392e-05
+[2025-12-29 07:22:13]   z0 = 5.0791e-05, jitter = 3.0000e-07
+[2025-12-29 07:22:13]   χ² = 30509.81, dof = 65
+[2025-12-29 07:22:13]   Condition number = 4.0
+[2025-12-29 07:22:13]   Orthogonalized = False
+[2025-12-29 07:22:13] Running stress harness...
+[2025-12-29 07:22:13] Starting stress harness with 69 analysis lines
+[2025-12-29 07:22:14] Stress harness complete: 54 configurations
+[2025-12-29 07:22:14] Running injection/recovery test...
+[2025-12-29 07:22:14] Injection/recovery complete
+[2025-12-29 07:22:14] Generating diagnostic plots...
+[2025-12-29 07:22:14] Diagnostic plots saved
+[2025-12-29 07:22:14] Generating executive summary...
+[2025-12-29 07:22:14] Gates:
+[2025-12-29 07:22:14]   gate_n: PASS
+[2025-12-29 07:22:14]   gate_chi2: FAIL
+[2025-12-29 07:22:14]   gate_stability: FAIL
+[2025-12-29 07:22:14]   gate_species: FAIL
+[2025-12-29 07:22:14] ============================================================
+[2025-12-29 07:22:14] Pipeline complete in 279.6s
+[2025-12-29 07:22:14] Output directory: results/holistic_v2
+[2025-12-29 07:22:14] ============================================================

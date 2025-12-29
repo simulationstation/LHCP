@@ -1,0 +1,6 @@
+stage,description,count,dropped,reason
+S0,Total atomic lines,351,0,
+S1,Attempted fits,351,0,OUT_OF_RANGE_OR_EDGE
+S2,Fit converged,336,15,FIT_FAILED
+S3,Analysis set,248,88,QUALITY_CUTS
+S4,Gold set,106,142,STRICT_CUTS

@@ -1,0 +1,10 @@
+reason,count,pct
+has_blend_suspect_flag,275,78.79656160458453
+has_poor_fit_flag,205,58.73925501432665
+reduced_chi2_exceeded,187,53.581661891117484
+asymmetry_exceeded,187,53.581661891117484
+sigma_lambda_obs_exceeded,100,28.653295128939828
+fit_failed,74,21.20343839541547
+window_contam_exceeded,61,17.478510028653297
+has_edge_flag,21,6.017191977077363
+low_snr,3,0.8595988538681949
