@@ -1,0 +1,11 @@
+continuum:
+  mask_width: 0.4
+  spline_s: 0.0001
+linefit:
+  max_components: 2
+  window: 0.6
+robust: false
+seed: 42
+sigma_clip: null
+species: Fe V
+spectrum: data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_coadd-spec.fits

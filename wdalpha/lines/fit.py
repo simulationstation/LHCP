@@ -33,31 +33,60 @@ class LineFitResult:
     n_components: int
 
 
-def fit_line_window(wave, flux, error, center_guess, n_components=1) -> LineFitResult:
+def fit_line_window(wave, flux, error, center_guess, n_components=1) -> LineFitResult | None:
+    """Fit absorption line(s) with Gaussian profile(s).
+
+    Returns None if fitting fails.
+    """
+    wave_range = wave.max() - wave.min()
+
+    # Initial guesses - ensure they're valid for absorption lines
     amp_guess = np.min(flux) - np.median(flux)
-    sigma_guess = (wave.max() - wave.min()) / (6 * n_components)
+    # Ensure amplitude is negative (absorption)
+    amp_guess = min(amp_guess, -0.01)
+
+    sigma_guess = wave_range / (6 * n_components)
+    # Ensure sigma is within bounds
+    sigma_guess = np.clip(sigma_guess, 1e-3, wave_range * 0.4)
+
+    offset_guess = np.median(flux)
+    # Ensure offset is positive
+    offset_guess = max(offset_guess, 0.1)
+
     params = []
     for i in range(n_components):
-        params.extend([amp_guess, center_guess + (i - (n_components - 1) / 2) * sigma_guess, sigma_guess])
-    params.append(np.median(flux))
+        cen_offset = (i - (n_components - 1) / 2) * sigma_guess
+        cen_guess = np.clip(center_guess + cen_offset, wave.min() + 0.01, wave.max() - 0.01)
+        params.extend([amp_guess, cen_guess, sigma_guess])
+    params.append(offset_guess)
+
     bounds_low = []
     bounds_high = []
     for _ in range(n_components):
         bounds_low.extend([-np.inf, wave.min(), 1e-4])
-        bounds_high.extend([0.0, wave.max(), (wave.max() - wave.min())])
+        bounds_high.extend([0.0, wave.max(), wave_range])
     bounds_low.append(0.0)
     bounds_high.append(np.inf)
 
-    popt, pcov = curve_fit(
-        multi_gaussian,
-        wave,
-        flux,
-        p0=params,
-        sigma=error,
-        absolute_sigma=True,
-        bounds=(bounds_low, bounds_high),
-        maxfev=10000,
-    )
+    try:
+        popt, pcov = curve_fit(
+            multi_gaussian,
+            wave,
+            flux,
+            p0=params,
+            sigma=error,
+            absolute_sigma=True,
+            bounds=(bounds_low, bounds_high),
+            maxfev=10000,
+        )
+    except (ValueError, RuntimeError) as e:
+        # Fitting failed - return None
+        return None
+
+    # Check for valid covariance
+    if np.any(np.isinf(pcov)) or np.any(np.isnan(pcov)):
+        return None
+
     perr = np.sqrt(np.diag(pcov))
     centers = popt[1::3][:n_components]
     center_errors = perr[1::3][:n_components]
@@ -89,8 +118,10 @@ def fit_lines(wavelength, flux, error, windows_df, max_components=1) -> List[Lin
             fl,
             err,
             row["wavelength_aa"],
-            n_components=max_components if row["blend_flag"] else 1,
+            n_components=max_components if row.get("blend_flag", False) else 1,
         )
+        if res is None:
+            return None
         res.line_id = str(row.get("line_id", row.get("species", "")))
         res.species = str(row["species"])
         return res

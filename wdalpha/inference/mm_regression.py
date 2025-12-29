@@ -57,9 +57,16 @@ def infer_delta_alpha(lines_df: pd.DataFrame, atomic_df: pd.DataFrame, include_l
     def wrapped(omega0, qval, x, z):
         return model((x, z), omega0, qval)
 
+    # curve_fit signature: f(xdata, *params) -> ydata
+    # We use a dummy xdata (indices) since our model uses omega_0/q directly
+    n_lines = len(omega_obs)
+    if n_lines < 2:
+        raise ValueError(f"Need at least 2 lines for inference, got {n_lines}")
+
     popt, pcov = curve_fit(
         lambda _, x, z: wrapped(omega_0, q, x, z),
-        omega_obs,
+        np.arange(n_lines),  # dummy xdata
+        omega_obs,  # ydata we're fitting
         p0=[x_guess, z_guess],
         sigma=sigma_omega,
         absolute_sigma=True,

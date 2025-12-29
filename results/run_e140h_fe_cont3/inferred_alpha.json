@@ -1,0 +1,17 @@
+{
+  "delta_alpha": -0.0002618081582771663,
+  "delta_alpha_err": 1.081059485447147e-05,
+  "z": -3.00215015485199e-05,
+  "z_err": 7.505671339252515e-07,
+  "chi2": 1053090.8721237478,
+  "dof": 264,
+  "metadata": {
+    "species": "Fe V",
+    "grating": "E140H",
+    "n_lines": 266,
+    "spline_s": 0.01,
+    "mask_width": 0.4,
+    "robust": false,
+    "sigma_clip": null
+  }
+}
