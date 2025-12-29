@@ -1,0 +1,10 @@
+max_lines: 30
+continuum_settings:
+  - name: smoke
+    spline_s: 0.001
+    mask_width_aa: 0.4
+stress:
+  distortion_degrees: [0]
+  robust_losses: [linear]
+  species_sets: [both]
+  wavelength_splits: [full]

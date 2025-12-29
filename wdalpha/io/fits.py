@@ -42,7 +42,7 @@ def _find_spectrum_columns(hdu: fits.BinTableHDU) -> Tuple[str, str, str]:
 def read_spectrum(path: Path) -> Spectrum1D:
     """Read a 1D spectrum from STIS/FUSE FITS files.
 
-    Returns wavelength in vacuum Angstrom.
+    Returns wavelength in Angstrom.
     """
     with fits.open(path) as hdul:
         primary_header = hdul[0].header if hdul else {}
@@ -70,5 +70,40 @@ def read_spectrum(path: Path) -> Spectrum1D:
         "obsid": str(primary_header.get("OBSID", "")),
         "instrument": str(primary_header.get("INSTRUME", "")),
         "telescope": str(primary_header.get("TELESCOP", "")),
+        "wcs_vacuum": str(primary_header.get("VACUUM", "")),
     }
     return Spectrum1D(wavelength=wavelength, flux=flux, error=error, meta=meta)
+
+
+def check_spectrum_sanity(spectrum: Spectrum1D) -> Dict[str, str]:
+    errors = []
+    warnings = []
+    wave = spectrum.wavelength
+    flux = spectrum.flux
+    error = spectrum.error
+    if wave.ndim != 1 or flux.ndim != 1 or error.ndim != 1:
+        errors.append("Spectrum arrays must be 1D.")
+    if wave.size == 0:
+        errors.append("Spectrum has zero length.")
+    if not np.all(np.isfinite(wave)):
+        errors.append("Non-finite wavelength values detected.")
+    if not np.all(np.isfinite(flux)):
+        errors.append("Non-finite flux values detected.")
+    if not np.all(np.isfinite(error)):
+        errors.append("Non-finite error values detected.")
+    if wave.size > 1 and not np.all(np.diff(wave) > 0):
+        errors.append("Wavelength array is not strictly increasing.")
+    if np.any(error <= 0):
+        errors.append("Non-positive error values detected.")
+    if wave.size > 0:
+        coverage = f"{wave.min():.2f}-{wave.max():.2f} AA"
+    else:
+        coverage = "unknown"
+    if spectrum.meta.get("wcs_vacuum", "").strip() == "":
+        warnings.append("VACUUM keyword not set in header; verify wavelength convention.")
+    return {
+        "errors": "; ".join(errors) if errors else "",
+        "warnings": "; ".join(warnings) if warnings else "",
+        "coverage": coverage,
+        "n_pixels": str(wave.size),
+    }
