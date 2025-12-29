@@ -2,6 +2,15 @@ seed: 42
 target: G191-B2B
 data_root: data
 results_root: results
+
+# HLSP coadded spectra (Preval et al. 2013)
+spectra:
+  e140h: data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_coadd-spec.fits
+  e230h: data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_coadd-spec.fits
+
+# Atomic line list with q-coefficients (clean subset only)
+line_list: data/atomic/analysis_lines_clean.csv
+
 continuum:
   spline_s: 0.001
   mask_width_aa: 0.4
@@ -11,4 +20,3 @@ linefit:
 inference:
   include_lab_uncertainty: true
 n_workers: 4
-line_list: null
