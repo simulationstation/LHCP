@@ -1,6 +1,9 @@
 relative_path,filename,category,size_bytes,modified,md5
+data/atomic/analysis_lines.csv,analysis_lines.csv,Data file,122835,2025-12-28T23:03:31.896701,05a8f43007cba6f5d4c3ccfffc9c3d82
+data/atomic/analysis_lines_clean.csv,analysis_lines_clean.csv,Data file,39394,2025-12-28T23:03:31.901148,9e06ba03ef0278168bbba14b3492605e
 data/atomic/combined_lines_q.csv,combined_lines_q.csv,Combined atomic table,155083,2025-12-28T22:47:12.729052,185f8fc428608734da829d1ba1061788
 data/atomic/combined_lines_q_20251228_224712.csv,combined_lines_q_20251228_224712.csv,Combined atomic table,156210,2025-12-28T22:47:12.729052,80ee1415bd54c4b8b41290a9b09f493b
+data/atomic/join_diagnostics.md,join_diagnostics.md,Data file,1873,2025-12-28T23:03:31.892301,6f3fcbdaaba97eb64ec4805b96350b40
 data/atomic/nist/nist_combined_FeV_NiV_20251228_221916.csv,nist_combined_FeV_NiV_20251228_221916.csv,Combined NIST table,130071,2025-12-28T22:19:18.573905,c632eaea15b434a720d5f92b70ad6e6f
 data/atomic/nist/nist_metadata_20251228_221916.txt,nist_metadata_20251228_221916.txt,NIST data,1100,2025-12-28T22:19:18.573905,26dc27a95bd95d9c4884b533a5a0518d
 data/atomic/nist/nist_parsed_Fe_V_20251228_221916.csv,nist_parsed_Fe_V_20251228_221916.csv,Parsed NIST data,48793,2025-12-28T22:19:17.253905,fb07673d0acd7e8527e2bf3ac2025292
@@ -32,10 +35,14 @@ data/atomic/papers/source_2410.01849/SMtables/G191_1.25.txt,G191_1.25.txt,arXiv 
 data/atomic/papers/source_2410.01849/SMtables/_data.csv,_data.csv,arXiv extracted file,0,2025-12-28T22:24:52.289626,d41d8cd98f00b204e9800998ecf8427e
 data/atomic/papers/source_2410.01849/SMtables/niv.tex,niv.tex,arXiv extracted file,26609,2024-10-01T03:17:37,c43bbec124303bda1e5f4e4f26305e98
 data/atomic/papers/source_2410.01849/continG191_OJAwithSM.tex,continG191_OJAwithSM.tex,arXiv extracted file,62572,2025-04-06T14:30:27,c5ccefc461861ae70bb91bdbbf6f706f
+data/hlsp/HLSP_NOTES.txt,HLSP_NOTES.txt,HLSP product,5231,2025-12-28T23:15:58.239177,8220a518741d18057ca164795d48f0bd
 data/hlsp/calspec/g191b2b_fos_003.fits,g191b2b_fos_003.fits,CALSPEC spectrum,100800,2025-12-28T22:45:20.116729,1a567594a26009c1a7eb356be742b5d6
 data/hlsp/calspec/g191b2b_mod_011.fits,g191b2b_mod_011.fits,CALSPEC spectrum,3934080,2025-12-28T22:45:18.554356,63e9cb5334bf2cd4d98fd14f123f89ea
-data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h-e230h_v1_cspec.fits,hlsp_wd-linelist_hst_stis_g191-b2b_e140h-e230h_v1_cspec.fits,WD-LINELIST HLSP,141041,2025-12-28T22:45:25.892409,b216958817b7615b2f3b35ef37e0181c
-data/hlsp/wd-linelist/hlsp_wd-linelist_multi_multi_g191-b2b_multi_v1_sed.fits,hlsp_wd-linelist_multi_multi_g191-b2b_multi_v1_sed.fits,WD-LINELIST HLSP,141041,2025-12-28T22:45:23.699030,b216958817b7615b2f3b35ef37e0181c
+data/hlsp/download_provenance.json,download_provenance.json,HLSP product,1363,2025-12-28T23:06:23.147833,52c4a29534dace7765515094e6869b59
+data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_coadd-spec.fits,hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_coadd-spec.fits,WD-LINELIST HLSP,2770560,2025-12-28T23:13:54.519434,a8a57482e979f85f9da204f3aef58589
+data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_linelist.txt,hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_linelist.txt,WD-LINELIST HLSP,90372,2025-12-28T23:13:55.417034,f12eebd3fb9f63317b3300747dde8ac6
+data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_coadd-spec.fits,hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_coadd-spec.fits,WD-LINELIST HLSP,4294080,2025-12-28T23:13:57.273211,9df338854f94e9f98c40869ae46b3749
+data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_linelist.txt,hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_linelist.txt,WD-LINELIST HLSP,7325,2025-12-28T23:13:57.871840,e6ffc8b3a8c6094f64eaab63f34a9625
 data/mast_query_results.csv,mast_query_results.csv,MAST query results,14968,2025-12-28T22:19:17.526705,2bdde10d68e32263cc3e0180abb7e37c
 data/raw/mastDownload/HST/o57u01040/o57u01040_x1d.fits,o57u01040_x1d.fits,Raw STIS x1d,1287360,2025-12-28T22:45:30.262470,df26dfe4b74b5feacb8cb02c2b5220c3
 data/raw/mastDownload/HST/o6hb10090/o6hb10090_x1d.fits,o6hb10090_x1d.fits,Raw STIS x1d,1676160,2025-12-28T22:45:32.161195,db3f9d47d8db1f899e9a5ba94a1fd0b2

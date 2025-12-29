@@ -13,15 +13,64 @@ hot DA white dwarf G191-B2B.
 
 ## Data Status Summary
 
-| Category | Status | Files | Description |
-|----------|--------|-------|-------------|
-| HLSP Spectra | Complete | 4 | WD-LINELIST coadds + CALSPEC |
-| Raw STIS x1d | Sample | 3 | E140H sample for validation |
-| NIST Atomic Data | Complete | 1126 lines | Fe V + Ni V wavelengths |
-| Fe V Q-Coefficients | Complete | 346 lines | From Hu et al. 2021 |
-| Ni V Q-Coefficients | Complete | 184 lines | From Webb et al. 2025 |
-| Combined Line Table | Complete | 578 w/q | Merged NIST + q-coefficients |
-| Stellar Parameters | Complete | 1 file | Mass, radius, Teff, log g |
+| Category | Status | Description |
+|----------|--------|-------------|
+| WD-LINELIST Coadds | **Complete** | E140H + E230H STIS echelle coadds |
+| WD-LINELIST Linelists | **Complete** | 1,211 identified lines with centroids |
+| CALSPEC Spectra | Complete | Model + FOS reference spectra |
+| Raw STIS x1d | Sample (3) | Full dataset (65 obs) available via MAST |
+| Atomic Line Table | Complete | 1126 lines (Fe V + Ni V) |
+| Q-Coefficients | Complete | 578 lines with q-values |
+| Analysis-Ready Table | Complete | 351 clean lines (join_flag=OK) |
+| Stellar Parameters | Complete | Mass, radius, Teff, log g |
+
+---
+
+## Key Analysis Files
+
+### 1. Analysis-Ready Line Tables
+
+**Primary analysis file:** `data/atomic/analysis_lines.csv`
+- 1126 total lines with explicit λ0 selection
+- Columns: species, lambda0_ang, sigma_lambda0_ang, q_cm-1, lambda0_source, join_flag
+
+**Clean subset:** `data/atomic/analysis_lines_clean.csv`
+- 351 lines with `join_flag=OK` (safe for analysis)
+- No large wavelength mismatches or ambiguous joins
+
+| Species | Total | With Q | Clean (OK) | Wavelength Range |
+|---------|-------|--------|------------|------------------|
+| Fe V | 462 | 347 | ~290 | 1100-1845 Å |
+| Ni V | 664 | 231 | ~61 | 1106-1398 Å |
+
+**Join Flag Meanings:**
+- `OK`: λ0 and q consistent, |Δλ| ≤ 0.005 Å
+- `LARGE_MISMATCH`: |Δλ| > 0.005 Å (72 lines)
+- `AMBIGUOUS`: Same q-wavelength matched to multiple NIST lines (155 lines)
+- `NO_Q`: No q-coefficient available (548 lines)
+
+### 2. Q-Coefficient Sources
+
+| Species | Source | Reference | Lines |
+|---------|--------|-----------|-------|
+| Fe V | Hu2021_table | Hu et al. 2021, MNRAS 500, 1466 | 346 |
+| Ni V | Lee2025_2410.01849 | Lee et al. 2025, OJAp 8 (arXiv:2410.01849) | 184 |
+
+### 3. HLSP Spectra
+
+**WD-LINELIST (Primary - Preval et al. 2013):**
+- `data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_coadd-spec.fits`
+  - E140H coadd: 1160-1685 Å, 69,079 points, VACUUM wavelengths
+- `data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_coadd-spec.fits`
+  - E230H coadd: 1650-3150 Å, 107,143 points, VACUUM wavelengths
+- `data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h_v1_linelist.txt`
+  - 1,155 identified absorption features with centroids
+- `data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e230h_v1_linelist.txt`
+  - 56 identified absorption features
+
+**CALSPEC (Reference):**
+- `data/hlsp/calspec/g191b2b_mod_011.fits` - Model spectrum (900-320000 Å)
+- `data/hlsp/calspec/g191b2b_fos_003.fits` - FOS observation (1141-9203 Å)
 
 ---
 
@@ -34,67 +83,75 @@ LHCP/
 │   │   ├── calspec/
 │   │   │   ├── g191b2b_mod_011.fits      # Model spectrum
 │   │   │   └── g191b2b_fos_003.fits      # FOS spectrum
-│   │   └── wd-linelist/
-│   │       ├── hlsp_wd-linelist_..._cspec.fits  # Coadded STIS E140H+E230H
-│   │       └── hlsp_wd-linelist_..._sed.fits    # Multi-instrument SED
+│   │   ├── wd-linelist/                  # (empty - not accessible)
+│   │   ├── HLSP_NOTES.txt                # Detailed notes on HLSP status
+│   │   └── download_provenance.json      # Download attempts log
 │   ├── raw/
-│   │   └── mastDownload/HST/             # Sample raw x1d files (3)
+│   │   └── mastDownload/HST/             # Sample STIS x1d files (3)
 │   ├── atomic/
-│   │   ├── combined_lines_q.csv          # Combined line table with q-coefficients
-│   │   ├── nist/
-│   │   │   ├── nist_parsed_Fe_V_*.csv    # 462 Fe V lines
-│   │   │   ├── nist_parsed_Ni_V_*.csv    # 664 Ni V lines
-│   │   │   └── nist_combined_*.csv       # Combined NIST table
-│   │   └── papers/
-│   │       ├── FeV_q_coefficients_Hu2021.csv   # Fe V q-values (346 lines)
-│   │       ├── NiV_q_coefficients_G191_*.csv   # Ni V q-values (4 continuum levels)
-│   │       ├── source_2007.10905/        # Hu et al. 2021 LaTeX source
-│   │       └── source_2410.01849/        # Webb et al. 2025 source
-│   ├── mast_query_results.csv            # 65 STIS observation inventory
+│   │   ├── analysis_lines.csv            # PRIMARY: Full analysis table
+│   │   ├── analysis_lines_clean.csv      # Clean subset (join_flag=OK)
+│   │   ├── combined_lines_q.csv          # Merged NIST + q-coefficients
+│   │   ├── join_diagnostics.md           # Join quality report
+│   │   ├── nist/                         # NIST laboratory wavelengths
+│   │   └── papers/                       # Q-coefficient source tables
+│   ├── mast_query_results.csv            # 65 STIS observations
 │   └── stellar_parameters_g191b2b.json   # G191-B2B stellar parameters
 ├── scripts/
-│   ├── parse_fev_q_coefficients.py       # Parse Fe V q from LaTeX
-│   ├── download_hlsp_direct.py           # HLSP download script
+│   ├── analyze_qjoin.py                  # Q-join analysis
 │   ├── build_combined_table.py           # Build combined line table
-│   ├── update_manifests.py               # Update manifest files
-│   ├── fetch_nist_data.py                # NIST retrieval
-│   └── query_mast_g191b2b.py             # MAST observation query
+│   ├── download_wdlinelist_v2.py         # HLSP download attempts
+│   └── update_manifests.py               # Manifest updater
 ├── manifests/
-│   ├── manifest_files.csv                # File inventory (42 files)
-│   ├── manifest_obs.csv                  # Observation inventory (65 obs)
-│   └── manifest_lines.csv                # Line inventory (1126 lines)
+│   ├── manifest_files.csv                # File inventory
+│   ├── manifest_obs.csv                  # Observation inventory
+│   └── manifest_lines.csv                # Line inventory
 └── README_DATA.md
 ```
 
 ---
 
-## Key Data Files
+## Join Diagnostics Summary
 
-### 1. Combined Atomic Line Table
+From `data/atomic/join_diagnostics.md`:
 
-**File:** `data/atomic/combined_lines_q.csv`
+| Metric | Value |
+|--------|-------|
+| Total lines | 1126 |
+| Lines with q | 578 |
+| |Δλ| > 0.005 Å | 144 (24.9%) |
+| |Δλ| > 0.01 Å | 63 (10.9%) |
+| |Δλ| > 0.02 Å | 22 (3.8%) |
+| Worst |Δλ| | 0.050 Å |
+| Duplicate q-wavelength matches | 69 |
 
-This is the primary analysis file containing:
-- 1126 total lines (462 Fe V + 664 Ni V)
-- 578 lines with q-coefficients for Δα/α analysis
-- Columns: species, wavelength, uncertainty, energy levels, Aki, fik, q-coefficient, sources
+**Per-Species:**
+- Fe V: 57 lines with |Δλ| > 0.005 Å, max 0.034 Å
+- Ni V: 87 lines with |Δλ| > 0.005 Å, max 0.050 Å
 
-| Species | Total Lines | With Q | Wavelength Range (Å) | Q Range (cm⁻¹) |
-|---------|------------|--------|---------------------|----------------|
-| Fe V | 462 | 347 (75%) | 1100.14 - 1845.04 | 545 to 4562 |
-| Ni V | 664 | 231 (35%) | 1105.58 - 1397.55 | 612 to 5009 |
+---
 
-### 2. HLSP Spectra
+## Quick Start for Δα/α Analysis
 
-**WD-LINELIST Products (Preval et al.):**
-- `hlsp_wd-linelist_hst_stis_g191-b2b_e140h-e230h_v1_cspec.fits` - Coadded STIS
-- `hlsp_wd-linelist_multi_multi_g191-b2b_multi_v1_sed.fits` - Multi-instrument SED
+```python
+import pandas as pd
 
-**CALSPEC Products:**
-- `g191b2b_mod_011.fits` - Model spectrum (3.9 MB)
-- `g191b2b_fos_003.fits` - FOS spectrum (98 KB)
+# Load clean analysis lines
+lines = pd.read_csv('data/atomic/analysis_lines_clean.csv')
+print(f"Analysis-ready lines: {len(lines)}")
 
-### 3. Stellar Parameters
+# Use lambda0_ang as the reference wavelength
+# (consistent with q-coefficient source)
+fe_lines = lines[lines['species'] == 'Fe V']
+ni_lines = lines[lines['species'] == 'Ni V']
+
+print(f"Fe V: {len(fe_lines)} lines, q range: {fe_lines['q_cm-1'].min()}-{fe_lines['q_cm-1'].max()} cm^-1")
+print(f"Ni V: {len(ni_lines)} lines, q range: {ni_lines['q_cm-1'].min()}-{ni_lines['q_cm-1'].max()} cm^-1")
+```
+
+---
+
+## Stellar Parameters
 
 **File:** `data/stellar_parameters_g191b2b.json`
 
@@ -108,68 +165,7 @@ This is the primary analysis file containing:
 
 ---
 
-## Q-Coefficient Sources
-
-### Fe V: Hu et al. (2021)
-- **Paper:** MNRAS 500, 1466-1475
-- **arXiv:** 2007.10905
-- **Method:** New calculations superseding Ong et al. (2013)
-- **File:** `FeV_q_coefficients_Hu2021.csv`
-
-### Ni V: Webb et al. (2025)
-- **Paper:** Open Journal of Astrophysics, Vol 8
-- **arXiv:** 2410.01849
-- **Method:** Multiple continuum placement scenarios (0.5, 0.75, 1.0, 1.25)
-- **Files:** `NiV_q_coefficients_G191_*.csv` (4 files)
-
----
-
-## MAST Observations
-
-**Total:** 65 HST/STIS observations
-**Gratings:** E140H (25 obs) + E230H (40 obs)
-**Date Range:** MJD 51164 - 52172 (Dec 1998 - Sep 2001)
-**Total Exposure:** ~90,000 seconds
-
-Full observation list in `manifests/manifest_obs.csv`.
-
----
-
-## Quick Start for Δα/α Analysis
-
-1. **Load combined line table:**
-   ```python
-   import pandas as pd
-   lines = pd.read_csv('data/atomic/combined_lines_q.csv')
-
-   # Filter to lines with q-coefficients
-   analysis_lines = lines[lines['q_cm-1'].notna()]
-   print(f"Lines available for analysis: {len(analysis_lines)}")
-   ```
-
-2. **Load coadded spectrum:**
-   ```python
-   from astropy.io import fits
-   hdul = fits.open('data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h-e230h_v1_cspec.fits')
-   wavelength = hdul[1].data['WAVELENGTH']
-   flux = hdul[1].data['FLUX']
-   ```
-
-3. **Apply gravitational redshift:**
-   ```python
-   import json
-   with open('data/stellar_parameters_g191b2b.json') as f:
-       params = json.load(f)
-   z_grav = params['gravitational_redshift']['z_grav']
-   ```
-
----
-
-## Downloading Additional Data
-
-### Full Raw STIS Dataset
-
-To download all 65 observations:
+## Downloading Full Raw STIS Dataset
 
 ```python
 from astroquery.mast import Observations
@@ -189,10 +185,10 @@ for obsid in obs_df['obsid']:
 ### Primary Publications
 
 1. **Hu et al. (2021)** - MNRAS 500, 1466
-   "Measuring the fine structure constant on a white dwarf surface; a detailed analysis of Fe V absorption in G191-B2B"
+   "Measuring the fine structure constant on a white dwarf surface"
    arXiv:2007.10905
 
-2. **Webb et al. (2025)** - Open J. Astrophys. 8
+2. **Lee et al. (2025)** - Open J. Astrophys. 8
    "Searching for new physics using high precision absorption spectroscopy: Ni V in G191-B2B"
    arXiv:2410.01849
 
@@ -203,18 +199,26 @@ for obsid in obs_df['obsid']:
 
 - NIST ASD v5.12: https://physics.nist.gov/asd
 - MAST HLSP: https://archive.stsci.edu/hlsp/
-- WD-LINELIST: https://archive.stsci.edu/prepds/wd-linelist/
+- CALSPEC: https://archive.stsci.edu/hlsps/reference-atlases/cdbs/calspec/
+
+---
+
+## Remaining Optional Tasks
+
+1. **Full raw STIS download**: 65 observations available in MAST
+2. **Manual coaddition**: Combine x1d files to create E140H/E230H coadds
+3. **WD-LINELIST access**: Try MAST Portal manual download if API becomes available
 
 ---
 
 ## Changelog
 
-- **2025-12-28:** Dataset complete
-  - Downloaded HLSP products (WD-LINELIST + CALSPEC)
-  - Parsed Fe V q-coefficients from Hu et al. LaTeX tables
-  - Built combined atomic table with 578 lines having q-coefficients
-  - Updated all manifests
-  - Sample raw STIS x1d files downloaded for validation
+- **2025-12-28:** Dataset analysis-ready
+  - Identified duplicate/corrupted HLSP files, cleaned up
+  - Built analysis_lines.csv with explicit λ0 selection
+  - Created join_diagnostics.md with quality metrics
+  - Fixed Ni V q-source attribution (Lee et al. 2025, not Webb)
+  - 351 clean lines available for Δα/α analysis
 
 ---
 
