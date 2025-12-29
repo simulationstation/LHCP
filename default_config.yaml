@@ -1,0 +1,14 @@
+seed: 42
+target: G191-B2B
+data_root: data
+results_root: results
+continuum:
+  spline_s: 0.001
+  mask_width_aa: 0.4
+linefit:
+  window_aa: 0.6
+  max_components: 2
+inference:
+  include_lab_uncertainty: true
+n_workers: 4
+line_list: null
