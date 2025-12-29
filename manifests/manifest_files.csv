@@ -1,78 +1,43 @@
-path,checksum_md5,size_bytes,retrieval_timestamp,source,query_or_url,description
-data/stellar_parameters_g191b2b.json,8f15bdc11fb1cfdc40fb30556ffc3da9,12102,2025-12-29T08:29:22.358636+00:00,Literature compilation,See references in file,G191-B2B stellar parameters
-data/mast_query_results.csv,2bdde10d68e32263cc3e0180abb7e37c,14968,2025-12-29T08:29:22.358707+00:00,MAST_API,astroquery.mast target=G191B2B instrument=STIS,HST/STIS observation inventory
-data/atomic/nist/nist_raw_Fe_V_20251228_221916.csv,38551c7a16fe080c84e875552918a214,112253,2025-12-29T08:29:22.358922+00:00,NIST_ASD_v5.12,https://physics.nist.gov/asd,Raw NIST download Fe V lines
-data/atomic/nist/nist_raw_Ni_V_20251228_221916.csv,d5ce9a3deed451fe0e845c5f67d64307,171581,2025-12-29T08:29:22.359188+00:00,NIST_ASD_v5.12,https://physics.nist.gov/asd,Raw NIST download Ni V lines
-data/atomic/nist/nist_parsed_Ni_V_20251228_221916.csv,090b2344bdae55555ff23754379f9116,81356,2025-12-29T08:29:22.359312+00:00,NIST_ASD_v5.12,https://physics.nist.gov/asd,Parsed Ni V line table
-data/atomic/nist/nist_combined_FeV_NiV_20251228_221916.csv,c632eaea15b434a720d5f92b70ad6e6f,130071,2025-12-29T08:29:22.359513+00:00,NIST_ASD_v5.12,https://physics.nist.gov/asd,Combined Fe V + Ni V line table
-data/atomic/nist/nist_metadata_20251228_221916.txt,26dc27a95bd95d9c4884b533a5a0518d,1100,2025-12-29T08:29:22.359523+00:00,NIST_ASD_v5.12,https://physics.nist.gov/asd,NIST retrieval metadata
-data/atomic/nist/nist_parsed_Fe_V_20251228_221916.csv,fb07673d0acd7e8527e2bf3ac2025292,48793,2025-12-29T08:29:22.359600+00:00,NIST_ASD_v5.12,https://physics.nist.gov/asd,Parsed Fe V line table
-data/atomic/papers/NiV_energy_levels_q_coefficients.tex,c43bbec124303bda1e5f4e4f26305e98,26609,2025-12-29T08:29:22.359661+00:00,Unknown,,Q-coefficient documentation
-data/atomic/papers/arXiv_1305.1337_source.tar.gz,41bd7a452259e20339b22a42eecb281e,203156,2025-12-29T08:29:22.359997+00:00,arXiv:1305.1337,https://arxiv.org/e-print/1305.1337,arXiv paper source archive
-data/atomic/papers/arXiv_2007.10905_source.tar.gz,d1a7de11fb55bf8cdf1c8cdb1dfb0f9b,201358,2025-12-29T08:29:22.360371+00:00,arXiv:2007.10905,https://arxiv.org/e-print/2007.10905,arXiv paper source archive
-data/atomic/papers/NiV_q_coefficients_G191_0.5.csv,3787a9d5a490e26c8ff8fd9d122346e9,11325,2025-12-29T08:29:22.360401+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from SMtables/,Q-coefficient documentation
-data/atomic/papers/NiV_q_coefficients_G191_1.25.csv,6d7b6157d72f2a3c0b1a1495d227d442,11561,2025-12-29T08:29:22.360431+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from SMtables/,Q-coefficient documentation
-data/atomic/papers/NiV_q_coefficients_G191_0.75.csv,d30603ebb750b5a12127abc246009204,12003,2025-12-29T08:29:22.360457+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from SMtables/,Q-coefficient documentation
-data/atomic/papers/arXiv_2410.01849_source.tar.gz,0d84adf0d0d77556a80c2348c21b4a06,9390204,2025-12-29T08:29:22.374591+00:00,arXiv:2410.01849,https://arxiv.org/e-print/2410.01849,arXiv paper source archive
-data/atomic/papers/FeV_atomic_data_q_coefficients.tex,f8056fd4472229b9cde9cc9fdb3a03e1,51279,2025-12-29T08:29:22.374705+00:00,Unknown,,Q-coefficient documentation
-data/atomic/papers/q_coefficient_sources.md,f2073a816f355277f8d16570451eba35,12808,2025-12-29T08:29:22.374747+00:00,Unknown,,Q-coefficient documentation
-data/atomic/papers/NiV_q_coefficients_G191_1.0.csv,0f7e2a9028844c28ad712bd46143392a,11747,2025-12-29T08:29:22.374778+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from SMtables/,Q-coefficient documentation
-data/atomic/papers/source_2007.10905/mnras.cls,584b1996e2ad3b6232713ae7357cb18e,62270,2025-12-29T08:29:22.374933+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,mnras.cls
-data/atomic/papers/source_2007.10905/paper1.bbl,ab5fba1d6dd09a052e683eef4a14dd2d,18854,2025-12-29T08:29:22.374995+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,paper1.bbl
-data/atomic/papers/source_2007.10905/paper1.bib,4d8f27371ab3bc27a31471e155c34677,126701,2025-12-29T08:29:22.375183+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,paper1.bib
-data/atomic/papers/source_2007.10905/paper1.tex,5b3373fdf0649a2d6f6851d74392ad8f,46228,2025-12-29T08:29:22.375261+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,paper1.tex
-data/atomic/papers/source_2007.10905/mnras.bst,8463aa2cc1948e346d5641ca59bb4619,43376,2025-12-29T08:29:22.375331+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,mnras.bst
-data/atomic/papers/source_2007.10905/natbib.sty,115cd866e54f531a975d2a3455d53c3c,30639,2025-12-29T08:29:22.375383+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,natbib.sty
-data/atomic/papers/source_2007.10905/table/example_stis_lines.tex,e927d82ebd1c5ebc109489eecb817e02,2780,2025-12-29T08:29:22.375425+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,example_stis_lines.tex
-data/atomic/papers/source_2007.10905/table/example_atomic_data.tex,186c4f8e467fda65a280a76df8d927dd,4437,2025-12-29T08:29:22.375442+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,example_atomic_data.tex
-data/atomic/papers/source_2007.10905/table/summary_errors.tex,26773144eb32976fd4ffcb3abb8054d8,1294,2025-12-29T08:29:22.375458+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,summary_errors.tex
-data/atomic/papers/source_2007.10905/table/summary_atomic_data.tex,f8056fd4472229b9cde9cc9fdb3a03e1,51279,2025-12-29T08:29:22.375537+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,Fe V atomic data (LaTeX table)
-data/atomic/papers/source_2007.10905/table/stis_lines.tex,f9c264cd1d644c0dbe544b3612193faf,10677,2025-12-29T08:29:22.375561+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,stis_lines.tex
-data/atomic/papers/source_2007.10905/figure/FeV_regions-2.pdf,44a56fdc4a426495a5da0fc60dfe4710,79729,2025-12-29T08:29:22.375691+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,FeV_regions-2.pdf
-data/atomic/papers/source_2007.10905/figure/unbiased_line_identification_dzu.pdf,8a7a0b8231b091b6b45c836a56125f62,22747,2025-12-29T08:29:22.375732+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,unbiased_line_identification_dzu.pdf
-data/atomic/papers/source_2007.10905/figure/wavelength_comparison_01_update.pdf,846ebb1dc96435e36425d1affdbf0ebd,18433,2025-12-29T08:29:22.375769+00:00,arXiv:2007.10905 (Hu et al. 2021),Extracted from tar.gz,wavelength_comparison_01_update.pdf
-data/atomic/papers/source_2410.01849/continG191_OJAwithSM.bbl,6946661ed8987103de98e7b8fceb4950,12963,2025-12-29T08:29:22.375807+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,continG191_OJAwithSM.bbl
-data/atomic/papers/source_2410.01849/openjournal.cls,58af81fcfef79a6a0341c16295f62ea8,52010,2025-12-29T08:29:22.375920+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,openjournal.cls
-data/atomic/papers/source_2410.01849/continG191_OJAwithSM.out,2ac0cf35dfeda9fbf3aaa1f7b9d8861d,4941,2025-12-29T08:29:22.375962+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,continG191_OJAwithSM.out
-data/atomic/papers/source_2410.01849/continG191_OJAwithSM.tex,c5ccefc461861ae70bb91bdbbf6f706f,62572,2025-12-29T08:29:22.376063+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,continG191_OJAwithSM.tex
-data/atomic/papers/source_2410.01849/contin.bib,ac4ad4402457e5ed0bc856bed5502f0e,77363,2025-12-29T08:29:22.376237+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,contin.bib
-data/atomic/papers/source_2410.01849/SMtables/G191_1.25.txt,e1e02a8e6748600a8e768f9b53b168a7,11580,2025-12-29T08:29:22.376295+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,G191_1.25.txt
-data/atomic/papers/source_2410.01849/SMtables/G191_0.75.txt,a799b64c81892e142c5aad39a7262696,12022,2025-12-29T08:29:22.376321+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,G191_0.75.txt
-data/atomic/papers/source_2410.01849/SMtables/G191_1.0.txt,796cf9849a62c82a40e05ef46cdd251f,11766,2025-12-29T08:29:22.376349+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,G191_1.0.txt
-data/atomic/papers/source_2410.01849/SMtables/_data.csv,d41d8cd98f00b204e9800998ecf8427e,0,2025-12-29T08:29:22.376361+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,_data.csv
-data/atomic/papers/source_2410.01849/SMtables/niv.tex,c43bbec124303bda1e5f4e4f26305e98,26609,2025-12-29T08:29:22.376408+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,niv.tex
-data/atomic/papers/source_2410.01849/SMtables/G191_0.5.txt,61e457cda20dcfbe1f3254833a3d50fd,11344,2025-12-29T08:29:22.376432+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,G191_0.5.txt
-data/atomic/papers/source_2410.01849/figs/shiftcompare.pdf,f6f4c93bc436fb0c3858df4fc76e1651,23211,2025-12-29T08:29:22.376496+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,shiftcompare.pdf
-data/atomic/papers/source_2410.01849/figs/full_125_3-eps-converted-to.pdf,4928b73346c8e0f3b6a83699f35baa29,279464,2025-12-29T08:29:22.376894+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_3-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_50_3.eps,3f3cddeaa4225372940b74a78ae3663a,801053,2025-12-29T08:29:22.378038+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_3.eps
-data/atomic/papers/source_2410.01849/figs/full_125_3.eps,6e520668862356c38ebb46d745dfa7b8,800453,2025-12-29T08:29:22.379169+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_3.eps
-data/atomic/papers/source_2410.01849/figs/full_125_2.eps,737c839c8891ecab12ff5740bd4fe328,856129,2025-12-29T08:29:22.380384+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_2.eps
-data/atomic/papers/source_2410.01849/figs/full_125_2-eps-converted-to.pdf,e340b55966ee15c81b28e620eb5ea8cd,294128,2025-12-29T08:29:22.380823+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_2-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_100_3-eps-converted-to.pdf,8af670f2c2403bd1b7a5c29d8166e92f,279800,2025-12-29T08:29:22.381220+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_3-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_75_4.eps,4b529c04a5fe7206ae02a8b86a14dedd,758054,2025-12-29T08:29:22.382354+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_4.eps
-data/atomic/papers/source_2410.01849/figs/full_100_3.eps,8b05a8dbd5eecaa74c6e6e62978fde42,800377,2025-12-29T08:29:22.383489+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_3.eps
-data/atomic/papers/source_2410.01849/figs/full_50_3-eps-converted-to.pdf,da8eb75a21b1943243b88373aaa68fc3,281976,2025-12-29T08:29:22.383917+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_3-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_75_1-eps-converted-to.pdf,71c7eda0e6c0c3f7c0d8a8cad44eaaac,316311,2025-12-29T08:29:22.384386+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_1-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/Figure4.pdf,0480a80d1c82415664001bb939fd548e,215722,2025-12-29T08:29:22.384694+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,Figure4.pdf
-data/atomic/papers/source_2410.01849/figs/full_100_4-eps-converted-to.pdf,fc4bf2757b3aafdf27d82ba472f97609,264431,2025-12-29T08:29:22.385068+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_4-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_50_4-eps-converted-to.pdf,201888469509acd19b488e4408dc28b0,265891,2025-12-29T08:29:22.385448+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_4-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_50_2.eps,e1024395958c8823c2108997d49e8fb5,857443,2025-12-29T08:29:22.386709+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_2.eps
-data/atomic/papers/source_2410.01849/figs/full_100_1.eps,0d2b6731b74e4b6a295aaa90b65bdca5,930683,2025-12-29T08:29:22.388041+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_1.eps
-data/atomic/papers/source_2410.01849/figs/full_50_4.eps,a2aa822258852d15bc47f1f3ae00ef15,758472,2025-12-29T08:29:22.389124+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_4.eps
-data/atomic/papers/source_2410.01849/figs/full_125_1-eps-converted-to.pdf,c9ae83f6fc1eb051870da46e0672ff52,315385,2025-12-29T08:29:22.389621+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_1-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_75_3-eps-converted-to.pdf,b2fae394ea2ed11364eaba15c663118d,280926,2025-12-29T08:29:22.390098+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_3-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_75_1.eps,f7de9d9157865643ea5159c280f14b61,930835,2025-12-29T08:29:22.391429+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_1.eps
-data/atomic/papers/source_2410.01849/figs/full_50_1.eps,1e6de4c8bf8b509424296d7d4227d674,931558,2025-12-29T08:29:22.392766+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_1.eps
-data/atomic/papers/source_2410.01849/figs/full_100_2-eps-converted-to.pdf,d5f2808726278097bd7e761a66e58801,294569,2025-12-29T08:29:22.393208+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_2-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_100_2.eps,698c9efb95855ed7023a2c78bfc436f7,856459,2025-12-29T08:29:22.394467+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_2.eps
-data/atomic/papers/source_2410.01849/figs/full_75_2-eps-converted-to.pdf,d8f26398e849899f788ba9edfcde72dd,295277,2025-12-29T08:29:22.394908+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_2-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_100_4.eps,969116d4427b314cf0cd25cc98fd7ca7,757872,2025-12-29T08:29:22.395958+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_4.eps
-data/atomic/papers/source_2410.01849/figs/full_125_4-eps-converted-to.pdf,39dd2410d194e7ba1d2f8504b900e9fe,263558,2025-12-29T08:29:22.396331+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_4-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_75_3.eps,b539780ee10808334117e6cbc9b140cf,800859,2025-12-29T08:29:22.397494+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_3.eps
-data/atomic/papers/source_2410.01849/figs/full_50_2-eps-converted-to.pdf,f4c510e40e218dd4100bde977ed574e8,296578,2025-12-29T08:29:22.397945+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_2-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_125_1.eps,ca5c9a847469bea241628234255d4d48,930543,2025-12-29T08:29:22.399254+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_1.eps
-data/atomic/papers/source_2410.01849/figs/full_50_1-eps-converted-to.pdf,771f29c0ec7a902db68480bd1203715e,317391,2025-12-29T08:29:22.399728+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_50_1-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_100_1-eps-converted-to.pdf,0fc8501d7c072c4324ab3a7aa203f7bb,315346,2025-12-29T08:29:22.400172+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_100_1-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_75_2.eps,5128e25640c69b34f9db446ff58af4c5,856806,2025-12-29T08:29:22.401398+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_2.eps
-data/atomic/papers/source_2410.01849/figs/full_75_4-eps-converted-to.pdf,3ea8c9293c4f301280db524b5820477e,264843,2025-12-29T08:29:22.401842+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_75_4-eps-converted-to.pdf
-data/atomic/papers/source_2410.01849/figs/full_125_4.eps,75d00e9c87d3357a62a66e762e4cc583,757778,2025-12-29T08:29:22.402916+00:00,arXiv:2410.01849 (Webb et al. 2025),Extracted from tar.gz,full_125_4.eps
+relative_path,filename,category,size_bytes,modified,md5
+data/atomic/combined_lines_q.csv,combined_lines_q.csv,Combined atomic table,155083,2025-12-28T22:47:12.729052,185f8fc428608734da829d1ba1061788
+data/atomic/combined_lines_q_20251228_224712.csv,combined_lines_q_20251228_224712.csv,Combined atomic table,156210,2025-12-28T22:47:12.729052,80ee1415bd54c4b8b41290a9b09f493b
+data/atomic/nist/nist_combined_FeV_NiV_20251228_221916.csv,nist_combined_FeV_NiV_20251228_221916.csv,Combined NIST table,130071,2025-12-28T22:19:18.573905,c632eaea15b434a720d5f92b70ad6e6f
+data/atomic/nist/nist_metadata_20251228_221916.txt,nist_metadata_20251228_221916.txt,NIST data,1100,2025-12-28T22:19:18.573905,26dc27a95bd95d9c4884b533a5a0518d
+data/atomic/nist/nist_parsed_Fe_V_20251228_221916.csv,nist_parsed_Fe_V_20251228_221916.csv,Parsed NIST data,48793,2025-12-28T22:19:17.253905,fb07673d0acd7e8527e2bf3ac2025292
+data/atomic/nist/nist_parsed_Ni_V_20251228_221916.csv,nist_parsed_Ni_V_20251228_221916.csv,Parsed NIST data,81356,2025-12-28T22:19:18.573905,090b2344bdae55555ff23754379f9116
+data/atomic/nist/nist_raw_Fe_V_20251228_221916.csv,nist_raw_Fe_V_20251228_221916.csv,Raw STIS product,112253,2025-12-28T22:19:17.249505,38551c7a16fe080c84e875552918a214
+data/atomic/nist/nist_raw_Ni_V_20251228_221916.csv,nist_raw_Ni_V_20251228_221916.csv,Raw STIS product,171581,2025-12-28T22:19:18.569505,d5ce9a3deed451fe0e845c5f67d64307
+data/atomic/papers/FeV_atomic_data_q_coefficients.tex,FeV_atomic_data_q_coefficients.tex,Q-coefficient table,51279,2025-12-28T22:25:40.799464,f8056fd4472229b9cde9cc9fdb3a03e1
+data/atomic/papers/FeV_q_coefficients_Hu2021.csv,FeV_q_coefficients_Hu2021.csv,Q-coefficient table,66001,2025-12-28T22:43:26.941855,bfece1b96490786f7c1ba0793e395208
+data/atomic/papers/NiV_energy_levels_q_coefficients.tex,NiV_energy_levels_q_coefficients.tex,Q-coefficient table,26609,2025-12-28T22:25:40.696532,c43bbec124303bda1e5f4e4f26305e98
+data/atomic/papers/NiV_q_coefficients_G191_0.5.csv,NiV_q_coefficients_G191_0.5.csv,Q-coefficient table,11325,2025-12-28T22:25:24.604582,3787a9d5a490e26c8ff8fd9d122346e9
+data/atomic/papers/NiV_q_coefficients_G191_0.75.csv,NiV_q_coefficients_G191_0.75.csv,Q-coefficient table,12003,2025-12-28T22:25:33.701496,d30603ebb750b5a12127abc246009204
+data/atomic/papers/NiV_q_coefficients_G191_1.0.csv,NiV_q_coefficients_G191_1.0.csv,Q-coefficient table,11747,2025-12-28T22:25:33.825872,0f7e2a9028844c28ad712bd46143392a
+data/atomic/papers/NiV_q_coefficients_G191_1.25.csv,NiV_q_coefficients_G191_1.25.csv,Q-coefficient table,11561,2025-12-28T22:25:33.950247,6d7b6157d72f2a3c0b1a1495d227d442
+data/atomic/papers/arXiv_1305.1337_source.tar.gz,arXiv_1305.1337_source.tar.gz,arXiv source archive,203156,2025-12-28T22:23:55.156316,41bd7a452259e20339b22a42eecb281e
+data/atomic/papers/arXiv_2007.10905_source.tar.gz,arXiv_2007.10905_source.tar.gz,arXiv source archive,201358,2025-12-28T22:23:47.345973,d1a7de11fb55bf8cdf1c8cdb1dfb0f9b
+data/atomic/papers/arXiv_2410.01849_source.tar.gz,arXiv_2410.01849_source.tar.gz,arXiv source archive,9390204,2025-12-28T22:23:55.769214,0d84adf0d0d77556a80c2348c21b4a06
+data/atomic/papers/q_coefficient_sources.md,q_coefficient_sources.md,Q-coefficient table,12808,2025-12-28T22:26:10.817080,f2073a816f355277f8d16570451eba35
+data/atomic/papers/source_2007.10905/paper1.tex,paper1.tex,arXiv extracted file,46228,2020-08-27T00:39:31,5b3373fdf0649a2d6f6851d74392ad8f
+data/atomic/papers/source_2007.10905/table/example_atomic_data.tex,example_atomic_data.tex,arXiv extracted file,4437,2020-08-27T00:39:31,186c4f8e467fda65a280a76df8d927dd
+data/atomic/papers/source_2007.10905/table/example_stis_lines.tex,example_stis_lines.tex,arXiv extracted file,2780,2020-08-27T00:39:31,e927d82ebd1c5ebc109489eecb817e02
+data/atomic/papers/source_2007.10905/table/stis_lines.tex,stis_lines.tex,arXiv extracted file,10677,2020-08-27T00:39:31,f9c264cd1d644c0dbe544b3612193faf
+data/atomic/papers/source_2007.10905/table/summary_atomic_data.tex,summary_atomic_data.tex,arXiv extracted file,51279,2020-08-27T00:39:31,f8056fd4472229b9cde9cc9fdb3a03e1
+data/atomic/papers/source_2007.10905/table/summary_errors.tex,summary_errors.tex,arXiv extracted file,1294,2020-08-27T00:39:31,26773144eb32976fd4ffcb3abb8054d8
+data/atomic/papers/source_2410.01849/.csv,.csv,arXiv extracted file,0,2025-12-28T22:24:57.223662,d41d8cd98f00b204e9800998ecf8427e
+data/atomic/papers/source_2410.01849/SMtables/G191_0.5.txt,G191_0.5.txt,arXiv extracted file,11344,2024-10-01T03:17:37,61e457cda20dcfbe1f3254833a3d50fd
+data/atomic/papers/source_2410.01849/SMtables/G191_0.75.txt,G191_0.75.txt,arXiv extracted file,12022,2024-10-01T03:17:37,a799b64c81892e142c5aad39a7262696
+data/atomic/papers/source_2410.01849/SMtables/G191_1.0.txt,G191_1.0.txt,arXiv extracted file,11766,2024-10-01T03:17:37,796cf9849a62c82a40e05ef46cdd251f
+data/atomic/papers/source_2410.01849/SMtables/G191_1.25.txt,G191_1.25.txt,arXiv extracted file,11580,2024-10-01T03:17:37,e1e02a8e6748600a8e768f9b53b168a7
+data/atomic/papers/source_2410.01849/SMtables/_data.csv,_data.csv,arXiv extracted file,0,2025-12-28T22:24:52.289626,d41d8cd98f00b204e9800998ecf8427e
+data/atomic/papers/source_2410.01849/SMtables/niv.tex,niv.tex,arXiv extracted file,26609,2024-10-01T03:17:37,c43bbec124303bda1e5f4e4f26305e98
+data/atomic/papers/source_2410.01849/continG191_OJAwithSM.tex,continG191_OJAwithSM.tex,arXiv extracted file,62572,2025-04-06T14:30:27,c5ccefc461861ae70bb91bdbbf6f706f
+data/hlsp/calspec/g191b2b_fos_003.fits,g191b2b_fos_003.fits,CALSPEC spectrum,100800,2025-12-28T22:45:20.116729,1a567594a26009c1a7eb356be742b5d6
+data/hlsp/calspec/g191b2b_mod_011.fits,g191b2b_mod_011.fits,CALSPEC spectrum,3934080,2025-12-28T22:45:18.554356,63e9cb5334bf2cd4d98fd14f123f89ea
+data/hlsp/wd-linelist/hlsp_wd-linelist_hst_stis_g191-b2b_e140h-e230h_v1_cspec.fits,hlsp_wd-linelist_hst_stis_g191-b2b_e140h-e230h_v1_cspec.fits,WD-LINELIST HLSP,141041,2025-12-28T22:45:25.892409,b216958817b7615b2f3b35ef37e0181c
+data/hlsp/wd-linelist/hlsp_wd-linelist_multi_multi_g191-b2b_multi_v1_sed.fits,hlsp_wd-linelist_multi_multi_g191-b2b_multi_v1_sed.fits,WD-LINELIST HLSP,141041,2025-12-28T22:45:23.699030,b216958817b7615b2f3b35ef37e0181c
+data/mast_query_results.csv,mast_query_results.csv,MAST query results,14968,2025-12-28T22:19:17.526705,2bdde10d68e32263cc3e0180abb7e37c
+data/raw/mastDownload/HST/o57u01040/o57u01040_x1d.fits,o57u01040_x1d.fits,Raw STIS x1d,1287360,2025-12-28T22:45:30.262470,df26dfe4b74b5feacb8cb02c2b5220c3
+data/raw/mastDownload/HST/o6hb10090/o6hb10090_x1d.fits,o6hb10090_x1d.fits,Raw STIS x1d,1676160,2025-12-28T22:45:32.161195,db3f9d47d8db1f899e9a5ba94a1fd0b2
+data/raw/mastDownload/HST/o6hb100f0/o6hb100f0_x1d.fits,o6hb100f0_x1d.fits,Raw STIS x1d,1365120,2025-12-28T22:45:34.090616,83a19342148637a2ef5893df23866d86
+data/stellar_parameters_g191b2b.json,stellar_parameters_g191b2b.json,Stellar parameters,12102,2025-12-28T22:22:59.115930,8f15bdc11fb1cfdc40fb30556ffc3da9

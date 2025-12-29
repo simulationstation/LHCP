@@ -13,29 +13,28 @@ from pathlib import Path
 LATEX_FILE = Path("/home/primary/LHCP/data/atomic/papers/source_2007.10905/table/summary_atomic_data.tex")
 OUTPUT_FILE = Path("/home/primary/LHCP/data/atomic/papers/FeV_q_coefficients_Hu2021.csv")
 
+
 def parse_latex_table(filepath):
     """Parse Fe V atomic data from LaTeX longtable."""
     records = []
 
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Find all data rows (after header, before endlastfoot)
-    # Pattern: ID& config1 & term1 & J1 & config2 & term2 & J2 & E1 & E2 & wavelength...
     lines = content.split('\n')
 
     for line in lines:
-        # Skip non-data lines
-        if not re.match(r'^\d+&', line.strip()):
+        # Skip non-data lines - data lines start with a number followed by &
+        stripped = line.strip()
+        if not re.match(r'^\d+\s*&', stripped):
             continue
 
-        # Clean up the line
-        line = line.strip()
-        if line.endswith('\\\\'):
-            line = line[:-2]
+        # Remove trailing \\ if present
+        if stripped.endswith('\\\\'):
+            stripped = stripped[:-2].strip()
 
         # Split by &
-        parts = [p.strip() for p in line.split('&')]
+        parts = [p.strip() for p in stripped.split('&')]
 
         if len(parts) < 17:
             continue
@@ -49,49 +48,76 @@ def parse_latex_table(filepath):
             config_upper = parts[4].strip()
             term_upper = parts[5].strip()
             j_upper = parts[6].strip()
+
+            # Energy levels
             E_lower = parts[7].strip()
             E_upper = parts[8].strip()
 
-            # Wavelengths (K14 or W19)
-            wl_k14 = parts[9].strip()
-            wl_k14_unc = parts[11].strip() if len(parts) > 11 else ''
-            wl_w19 = parts[12].strip() if len(parts) > 12 else ''
-            wl_w19_unc = parts[14].strip() if len(parts) > 14 else ''
+            # K14 wavelength and uncertainty (columns 9, 10, 11)
+            wl_k14_raw = parts[9].strip()
+            k14_flag = parts[10].strip() if len(parts) > 10 else ''
+            wl_k14_unc_raw = parts[11].strip() if len(parts) > 11 else ''
 
-            # Oscillator strength
-            f_val = parts[15].strip() if len(parts) > 15 else ''
+            # W19 wavelength and uncertainty (columns 12, 13, 14)
+            wl_w19_raw = parts[12].strip() if len(parts) > 12 else ''
+            w19_flag = parts[13].strip() if len(parts) > 13 else ''
+            wl_w19_unc_raw = parts[14].strip() if len(parts) > 14 else ''
 
-            # Damping constant
-            gamma = parts[16].strip() if len(parts) > 16 else ''
+            # Oscillator strength (column 15)
+            f_val_raw = parts[15].strip() if len(parts) > 15 else ''
 
-            # Q-coefficient (last column)
-            q_val = parts[17].strip() if len(parts) > 17 else ''
+            # Damping constant (column 16)
+            gamma_raw = parts[16].strip() if len(parts) > 16 else ''
 
-            # Clean up wavelength values (remove $ markers, stars, diamonds)
-            wl_k14 = re.sub(r'[\$\*]', '', wl_k14).strip()
-            wl_w19 = re.sub(r'[\$\*\diamond]', '', wl_w19).strip()
-            wl_k14_unc = re.sub(r'[\$\*]', '', wl_k14_unc).strip()
-            wl_w19_unc = re.sub(r'[\$\*\diamond]', '', wl_w19_unc).strip()
+            # Q-coefficient (column 17)
+            q_val_raw = parts[17].strip() if len(parts) > 17 else ''
 
-            # Clean gamma (remove footnote markers)
-            gamma = re.sub(r'\$[^\$]*\$', '', gamma).strip()
-            gamma = re.sub(r'\^\mathsection', '', gamma).strip()
+            # Clean wavelength values - remove LaTeX markers and flags
+            def clean_wavelength(wl):
+                if not wl:
+                    return ''
+                # Remove $\star$, $\diamond$, and other markers
+                wl = re.sub(r'\$[^$]*\$', '', wl)
+                wl = re.sub(r'\\star', '', wl)
+                wl = re.sub(r'\\diamond', '', wl)
+                return wl.strip()
 
-            # Clean f value (remove footnotes)
-            f_val = re.sub(r'\$[^\$]*\$', '', f_val).strip()
-            f_val = re.sub(r'\^\dagger', '', f_val).strip()
+            def clean_numeric(val):
+                if not val:
+                    return ''
+                # Remove LaTeX markers, footnotes
+                val = re.sub(r'\$[^$]*\$', '', val)
+                val = re.sub(r'\^\s*\\?mathsection', '', val)
+                val = re.sub(r'\^\s*\\?dagger', '', val)
+                val = re.sub(r'\\mathsection', '', val)
+                val = re.sub(r'\\dagger', '', val)
+                return val.strip()
 
-            # Clean q value
-            q_val = re.sub(r'\s+', '', q_val).strip()
+            wl_k14 = clean_wavelength(wl_k14_raw)
+            wl_k14_unc = clean_wavelength(wl_k14_unc_raw)
+            wl_w19 = clean_wavelength(wl_w19_raw)
+            wl_w19_unc = clean_wavelength(wl_w19_unc_raw)
+            f_val = clean_numeric(f_val_raw)
+            gamma = clean_numeric(gamma_raw)
+            q_val = clean_numeric(q_val_raw)
 
-            # Skip if no q-value
-            if not q_val:
-                continue
+            # Check flags for marked lines
+            is_k14_used = '$\\star$' in k14_flag or '\\star' in k14_flag or '*' in wl_k14_raw
+            is_w19_used = '$\\diamond$' in w19_flag or '\\diamond' in w19_flag
 
             # Use K14 wavelength preferentially, else W19
-            wavelength = wl_k14 if wl_k14 else wl_w19
-            wavelength_unc = wl_k14_unc if wl_k14 else wl_w19_unc
-            wavelength_source = 'K14' if wl_k14 else 'W19'
+            if wl_k14:
+                wavelength = wl_k14
+                wavelength_unc = wl_k14_unc
+                wavelength_source = 'K14'
+            elif wl_w19:
+                wavelength = wl_w19
+                wavelength_unc = wl_w19_unc
+                wavelength_source = 'W19'
+            else:
+                wavelength = ''
+                wavelength_unc = ''
+                wavelength_source = ''
 
             record = {
                 'id': line_id,
@@ -104,9 +130,15 @@ def parse_latex_table(filepath):
                 'J_upper': j_upper,
                 'E_lower_cm-1': E_lower,
                 'E_upper_cm-1': E_upper,
+                'wavelength_K14_ang': wl_k14,
+                'wavelength_K14_unc_ang': wl_k14_unc,
+                'wavelength_W19_ang': wl_w19,
+                'wavelength_W19_unc_ang': wl_w19_unc,
                 'wavelength_ang': wavelength,
                 'wavelength_unc_ang': wavelength_unc,
                 'wavelength_source': wavelength_source,
+                'used_K14': is_k14_used,
+                'used_W19': is_w19_used,
                 'f': f_val,
                 'gamma_s-1': gamma,
                 'q_cm-1': q_val,
@@ -129,7 +161,8 @@ def save_csv(records, output_path):
 
     fieldnames = list(records[0].keys())
 
-    with open(output_path, 'w', newline='') as f:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(records)
@@ -143,28 +176,54 @@ def main():
     print(f"Output: {OUTPUT_FILE}")
     print()
 
+    if not LATEX_FILE.exists():
+        print(f"ERROR: Input file not found: {LATEX_FILE}")
+        return
+
     records = parse_latex_table(LATEX_FILE)
+    print(f"Parsed {len(records)} Fe V lines total")
 
-    print(f"Parsed {len(records)} Fe V lines with q-coefficients")
+    # Filter to those with valid q values
+    valid_q_records = [r for r in records if r['q_cm-1']]
+    print(f"Lines with q-coefficients: {len(valid_q_records)}")
 
-    # Filter to only those with valid q values
-    valid_records = [r for r in records if r['q_cm-1']]
-    print(f"Lines with valid q-coefficients: {len(valid_records)}")
+    # Filter to those with valid wavelengths
+    valid_records = [r for r in records if r['wavelength_ang']]
+    print(f"Lines with wavelengths: {len(valid_records)}")
 
-    if valid_records:
-        save_csv(valid_records, OUTPUT_FILE)
+    if records:
+        save_csv(records, OUTPUT_FILE)
 
         # Print sample
-        print("\nSample records:")
-        for r in valid_records[:5]:
-            print(f"  λ={r['wavelength_ang']} Å, q={r['q_cm-1']} cm^-1")
+        print("\nSample records (first 5):")
+        for r in records[:5]:
+            print(f"  ID={r['id']}, λ={r['wavelength_ang']} Å ({r['wavelength_source']}), q={r['q_cm-1']} cm^-1")
 
         # Statistics
-        wavelengths = [float(r['wavelength_ang']) for r in valid_records if r['wavelength_ang']]
-        q_values = [int(r['q_cm-1']) for r in valid_records if r['q_cm-1'].isdigit() or (r['q_cm-1'].startswith('-') and r['q_cm-1'][1:].isdigit())]
+        wavelengths = []
+        q_values = []
+        for r in records:
+            if r['wavelength_ang']:
+                try:
+                    wavelengths.append(float(r['wavelength_ang']))
+                except ValueError:
+                    pass
+            if r['q_cm-1']:
+                try:
+                    q_values.append(int(r['q_cm-1']))
+                except ValueError:
+                    pass
 
-        print(f"\nWavelength range: {min(wavelengths):.4f} - {max(wavelengths):.4f} Å")
-        print(f"Q-coefficient range: {min(q_values)} to {max(q_values)} cm^-1")
+        if wavelengths:
+            print(f"\nWavelength range: {min(wavelengths):.4f} - {max(wavelengths):.4f} Å")
+        if q_values:
+            print(f"Q-coefficient range: {min(q_values)} to {max(q_values)} cm^-1")
+
+        # Count marked lines
+        k14_used = sum(1 for r in records if r['used_K14'])
+        w19_used = sum(1 for r in records if r['used_W19'])
+        print(f"\nLines marked with star (K14 used): {k14_used}")
+        print(f"Lines marked with diamond (W19 used): {w19_used}")
 
 
 if __name__ == "__main__":
