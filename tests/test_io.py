@@ -1,6 +1,6 @@
 import numpy as np
 from astropy.io import fits
-from wdalpha.io.fits import read_spectrum
+from wdalpha.io.fits import check_spectrum_sanity, read_spectrum
 
 
 def test_read_spectrum(tmp_path):
@@ -17,3 +17,5 @@ def test_read_spectrum(tmp_path):
     spec = read_spectrum(path)
     assert spec.wavelength.size == 10
     assert np.allclose(spec.flux, flux)
+    sanity = check_spectrum_sanity(spec)
+    assert sanity["errors"] == ""

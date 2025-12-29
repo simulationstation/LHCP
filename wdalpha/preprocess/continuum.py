@@ -30,3 +30,22 @@ def normalize_spectrum(
     norm_flux = flux / continuum
     norm_error = error / continuum
     return norm_flux, norm_error, continuum
+
+
+def build_continuum(
+    wavelength: np.ndarray,
+    flux: np.ndarray,
+    error: np.ndarray,
+    line_centers: Iterable[float],
+    mask_width_aa: float,
+    spline_s: float,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    mask = build_mask(wavelength, line_centers, mask_width_aa)
+    norm_flux, norm_error, continuum = normalize_spectrum(
+        wavelength,
+        flux,
+        error,
+        mask,
+        spline_s,
+    )
+    return norm_flux, norm_error, continuum, mask

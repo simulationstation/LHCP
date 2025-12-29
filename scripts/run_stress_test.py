@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Run a single stress test configuration."""
+__test__ = False
 import sys
 import yaml
 import json
@@ -8,7 +9,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from wdalpha.io.fits import read_spectrum
-from wdalpha.lines.masks import build_line_windows
 from wdalpha.preprocess.continuum import build_mask, normalize_spectrum
 from wdalpha.lines.fit import fit_lines
 from wdalpha.inference.mm_regression import infer_delta_alpha, save_result
@@ -31,7 +31,16 @@ def run_analysis(run_dir, spline_s=0.001, mask_width=0.4, window=0.6, max_compon
     atomic = pd.read_csv(RUN_DIR / 'atomic_used.csv')
     print(f'  Atomic lines: {len(atomic)}')
 
-    windows = build_line_windows(atomic, half_width=window)
+    line_table = [
+        {
+            "line_id": row.get("line_id", row.get("species")),
+            "species": row["species"],
+            "lambda0": row["wavelength_aa"],
+            "lambda_expected": row["wavelength_aa"],
+            "edge_flag": False,
+        }
+        for _, row in atomic.iterrows()
+    ]
     mask = build_mask(spectrum.wavelength, atomic['wavelength_aa'], half_width=mask_width)
 
     print('Normalizing spectrum...')
@@ -40,11 +49,20 @@ def run_analysis(run_dir, spline_s=0.001, mask_width=0.4, window=0.6, max_compon
     )
 
     print('Fitting lines...')
-    results = fit_lines(spectrum.wavelength, norm_flux, norm_error, windows, max_components=max_components)
+    results = fit_lines(
+        spectrum.wavelength,
+        norm_flux,
+        norm_error,
+        line_table,
+        window,
+        max_components,
+        edge_buffer_aa=0.2,
+        jobs=4,
+    )
     print(f'  Lines fit: {len(results)} / {len(atomic)}')
 
     rows = [{'line_id': res.line_id, 'species': res.species, 'lambda_obs': res.lambda_obs,
-             'sigma_lambda_obs': res.sigma_lambda_obs, 'chi2': res.chi2, 'n_components': res.n_components}
+             'sigma_lambda_obs': res.sigma_lambda_obs, 'chi2': res.chi2_local, 'n_components': res.n_components}
             for res in results]
     lines_df = pd.DataFrame(rows)
 

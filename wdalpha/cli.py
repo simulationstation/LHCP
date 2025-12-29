@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import List
@@ -12,11 +13,11 @@ import yaml
 from rich.console import Console
 
 from wdalpha.config import RunConfig
+from wdalpha.holistic import load_holistic_config, run_holistic
 from wdalpha.io.fits import read_spectrum
 from wdalpha.io.mast import download_hlsp, download_mast
 from wdalpha.io.tables import build_atomic_table
 from wdalpha.lines.fit import fit_lines
-from wdalpha.lines.masks import build_line_windows
 from wdalpha.preprocess.continuum import build_mask, normalize_spectrum
 from wdalpha.inference.mm_regression import infer_delta_alpha, save_result
 from wdalpha.report.plots import plot_q_vs_shift, plot_residuals
@@ -44,19 +45,37 @@ def cmd_build_atomic(args: argparse.Namespace) -> None:
 def cmd_fit_lines(args: argparse.Namespace) -> None:
     spectrum = read_spectrum(Path(args.spectrum))
     atomic = pd.read_csv(args.atomic)
-    windows = build_line_windows(atomic, args.window)
     mask = build_mask(spectrum.wavelength, atomic["wavelength_aa"], args.mask_width)
     norm_flux, norm_error, continuum = normalize_spectrum(
         spectrum.wavelength, spectrum.flux, spectrum.error, mask, args.spline_s
     )
-    results = fit_lines(spectrum.wavelength, norm_flux, norm_error, windows, max_components=args.max_components)
+    line_table = [
+        {
+            "line_id": row.get("line_id", row.get("species")),
+            "species": row["species"],
+            "lambda0": row["wavelength_aa"],
+            "lambda_expected": row["wavelength_aa"],
+            "edge_flag": False,
+        }
+        for _, row in atomic.iterrows()
+    ]
+    results = fit_lines(
+        spectrum.wavelength,
+        norm_flux,
+        norm_error,
+        line_table,
+        args.window,
+        args.max_components,
+        edge_buffer_aa=0.2,
+        jobs=4,
+    )
     rows = [
         {
             "line_id": res.line_id,
             "species": res.species,
             "lambda_obs": res.lambda_obs,
             "sigma_lambda_obs": res.sigma_lambda_obs,
-            "chi2": res.chi2,
+            "chi2": res.chi2_local,
             "n_components": res.n_components,
         }
         for res in results
@@ -147,6 +166,28 @@ def cmd_run(args: argparse.Namespace) -> None:
     (run_dir / "logs.txt").write_text("Run completed")
 
 
+def cmd_holistic_run(args: argparse.Namespace) -> None:
+    default_path = Path("default_config.yaml")
+    config = load_holistic_config(
+        default_path,
+        Path(args.config) if args.config else None,
+        {
+            "target": args.target,
+            "data_root": args.data_root,
+            "results_root": args.out,
+            "atomic_path": args.atomic,
+            "do_e230h": args.do_e230h,
+            "jobs": args.jobs,
+        },
+    )
+    if args.spectrum:
+        config.extra["spectrum"] = args.spectrum
+    if args.use_hlsp_linelists:
+        config.use_hlsp_linelists = Path(args.use_hlsp_linelists)
+    run_dir = Path(args.out)
+    run_holistic(config, run_dir, sys.argv)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="wdalpha")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -190,6 +231,18 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--atomic", required=True)
     run.add_argument("--out", default="results")
     run.set_defaults(func=cmd_run)
+
+    holistic = sub.add_parser("holistic-run", help="Holistic end-to-end pipeline")
+    holistic.add_argument("--target", required=True)
+    holistic.add_argument("--data-root", default="data")
+    holistic.add_argument("--out", required=True)
+    holistic.add_argument("--spectrum")
+    holistic.add_argument("--atomic")
+    holistic.add_argument("--use-hlsp-linelist")
+    holistic.add_argument("--do-e230h", action="store_true")
+    holistic.add_argument("--jobs", type=int, default=4)
+    holistic.add_argument("--config")
+    holistic.set_defaults(func=cmd_holistic_run)
 
     return parser
 

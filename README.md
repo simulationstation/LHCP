@@ -34,6 +34,16 @@ wdalpha run \
   --out results
 ```
 
+### Holistic WD run (E140H baseline)
+
+```bash
+wdalpha holistic-run \
+  --target G191-B2B \
+  --data-root ./LHCP/ \
+  --out ./LHCP/results/holistic_run/ \
+  --atomic ./LHCP/data/atomic/analysis_lines_clean.csv
+```
+
 ### Piecewise workflow
 
 ```bash
