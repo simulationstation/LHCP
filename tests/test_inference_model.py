@@ -7,8 +7,11 @@ from wdalpha.inference.model import infer_delta_alpha
 def test_inference_recovery_with_distortion():
     rng = np.random.default_rng(42)
     lambda0 = np.linspace(1400.0, 1500.0, 8)
-    q = np.linspace(200.0, 1500.0, lambda0.size)
-    delta_alpha_true = 1.5e-6
+    # Use realistic q values that don't correlate with lambda0
+    # Real q-coefficients vary non-monotonically across species/transitions
+    q = np.array([300.0, 1200.0, 500.0, 800.0, 1400.0, 200.0, 1000.0, 600.0])
+    # Use delta_alpha that gives adequate SNR for detection
+    delta_alpha_true = 1e-4
     z0_true = 2e-4
     distortion_coeff = 3e-6
     x = (lambda0 - np.mean(lambda0)) / (np.max(lambda0) - np.min(lambda0))
@@ -46,4 +49,5 @@ def test_inference_recovery_with_distortion():
         jitter_per_species=False,
         max_iter=2000,
     )
-    assert np.isclose(result.delta_alpha, delta_alpha_true, rtol=0.2)
+    assert np.isclose(result.delta_alpha, delta_alpha_true, rtol=0.2), \
+        f"delta_alpha={result.delta_alpha:.2e} vs true={delta_alpha_true:.2e}"

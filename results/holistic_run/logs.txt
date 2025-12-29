@@ -1,0 +1,5 @@
+command: holistic-run --target G191-B2B
+python: 3.12.3 (main, Nov  6 2025, 13:44:16) [GCC 13.3.0]
+numpy: 1.26.4
+pandas: 2.2.2
+scipy: 1.12.0

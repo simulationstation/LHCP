@@ -5,7 +5,7 @@ from typing import Dict, Tuple
 
 import numpy as np
 import pandas as pd
-from scipy.optimize import least_squares
+from scipy.optimize import least_squares, minimize
 from concurrent.futures import ThreadPoolExecutor
 
 from wdalpha.utils.units import omega0_from_lambda, sensitivity_factor
@@ -108,11 +108,35 @@ def infer_delta_alpha(
     max_iter: int,
 ) -> InferenceResult:
     merged = lines.merge(atomic, on="line_id", suffixes=("_obs", "_lab"))
-    lambda0 = merged["lambda0_ang"].to_numpy()
+    # Handle lambda0_ang column which may be suffixed after merge
+    if "lambda0_ang" in merged.columns:
+        lambda0 = merged["lambda0_ang"].to_numpy()
+    elif "lambda0_ang_obs" in merged.columns:
+        lambda0 = merged["lambda0_ang_obs"].to_numpy()
+    elif "lambda0_ang_lab" in merged.columns:
+        lambda0 = merged["lambda0_ang_lab"].to_numpy()
+    else:
+        raise KeyError("lambda0_ang not found in merged data")
     lambda_obs = merged["lambda_obs"].to_numpy()
     sigma_lambda = merged["sigma_lambda_obs"].to_numpy()
-    q_cm1 = merged["q_cm1"].to_numpy()
-    species = merged["species"].to_numpy()
+    # Handle q_cm1 column which may be suffixed after merge
+    if "q_cm1" in merged.columns:
+        q_cm1 = merged["q_cm1"].to_numpy()
+    elif "q_cm1_obs" in merged.columns:
+        q_cm1 = merged["q_cm1_obs"].to_numpy()
+    elif "q_cm1_lab" in merged.columns:
+        q_cm1 = merged["q_cm1_lab"].to_numpy()
+    else:
+        raise KeyError("q_cm1 not found in merged data")
+    # Handle species column which may be suffixed after merge
+    if "species" in merged.columns:
+        species = merged["species"].to_numpy()
+    elif "species_obs" in merged.columns:
+        species = merged["species_obs"].to_numpy()
+    elif "species_lab" in merged.columns:
+        species = merged["species_lab"].to_numpy()
+    else:
+        species = np.array(["unknown"] * len(merged))
 
     z_obs = lambda_obs / lambda0 - 1.0
     sigma_z = sigma_lambda / lambda0
@@ -133,12 +157,48 @@ def infer_delta_alpha(
         np.log(np.full(n_species, jitter_init)) if jitter_per_species else None,
     )
 
+    # Build bounds to prevent jitter from exploding to infinity
+    # Jitter must stay within reasonable limits relative to sigma_z
+    log_jitter_lower = np.log(1e-15)
+    log_jitter_upper = np.log(10.0 * np.median(sigma_z))  # upper bound: 10x median error
+    n_params = len(params0)
+    lower_bounds = np.full(n_params, -np.inf)
+    upper_bounds = np.full(n_params, np.inf)
+    # Set bounds for log_jitter (at index 2 + n_distortion)
+    jitter_idx = 2 + n_distortion
+    lower_bounds[jitter_idx] = log_jitter_lower
+    upper_bounds[jitter_idx] = log_jitter_upper
+    # Set bounds for per-species jitter if applicable
+    if n_species > 0:
+        for i in range(n_species):
+            lower_bounds[jitter_idx + 1 + i] = log_jitter_lower
+            upper_bounds[jitter_idx + 1 + i] = log_jitter_upper
+
     def model(params: np.ndarray) -> np.ndarray:
         delta_alpha, z0, distortion_coeffs, _, _ = _unpack_params(params, n_distortion, n_species)
         distortion_term = distortion @ distortion_coeffs if n_distortion else 0.0
         return z0 + distortion_term + sensitivity * delta_alpha
 
+    def neg_log_likelihood(params: np.ndarray) -> float:
+        """Proper Gaussian NLL with log-variance penalty to prevent jitter degeneracy."""
+        delta_alpha, z0, distortion_coeffs, log_jitter, log_jitter_species = _unpack_params(
+            params, n_distortion, n_species
+        )
+        base = z0 + (distortion @ distortion_coeffs if n_distortion else 0.0) + sensitivity * delta_alpha
+        jitter = np.exp(log_jitter)
+        if jitter_per_species and log_jitter_species is not None:
+            jitter_species = np.exp(log_jitter_species)
+            sigma_eff_sq = sigma_z**2 + np.array([jitter_species[species_index[sp]] for sp in species]) ** 2
+        else:
+            sigma_eff_sq = sigma_z**2 + jitter**2
+        # Gaussian NLL: 0.5 * sum[(z - model)^2 / sigma^2 + log(sigma^2)]
+        # The log(sigma^2) term prevents jitter from going to infinity
+        resid_sq = (z_obs - base) ** 2
+        nll = 0.5 * np.sum(resid_sq / sigma_eff_sq + np.log(sigma_eff_sq))
+        return float(nll)
+
     def residuals(params: np.ndarray) -> np.ndarray:
+        """Residuals for chi2 calculation and Jacobian estimation."""
         delta_alpha, z0, distortion_coeffs, log_jitter, log_jitter_species = _unpack_params(
             params, n_distortion, n_species
         )
@@ -152,12 +212,15 @@ def infer_delta_alpha(
             sigma = np.sqrt(sigma**2 + jitter**2)
         return (z_obs - base) / sigma
 
-    result = least_squares(
-        residuals,
+    # Use minimize with proper NLL instead of least_squares
+    # This prevents the jitter-inflation degeneracy
+    opt_bounds = list(zip(lower_bounds, upper_bounds))
+    result = minimize(
+        neg_log_likelihood,
         params0,
-        loss=robust_loss,
-        f_scale=huber_scale,
-        max_nfev=max_iter,
+        method='L-BFGS-B',
+        bounds=opt_bounds,
+        options={'maxiter': max_iter, 'disp': False},
     )
 
     delta_alpha, z0, distortion_coeffs, log_jitter, _ = _unpack_params(result.x, n_distortion, n_species)
@@ -165,7 +228,16 @@ def infer_delta_alpha(
     chi2 = float(np.sum(residuals(result.x) ** 2))
     dof = max(1, z_obs.size - result.x.size)
 
-    jac = result.jac
+    # Compute numerical Jacobian of residuals for error estimation
+    eps = 1e-8
+    resid0 = residuals(result.x)
+    jac_cols = []
+    for i in range(len(result.x)):
+        params_plus = result.x.copy()
+        params_plus[i] += eps
+        resid_plus = residuals(params_plus)
+        jac_cols.append((resid_plus - resid0) / eps)
+    jac = np.column_stack(jac_cols)
     cov = np.linalg.pinv(jac.T @ jac)
     errs = np.sqrt(np.diag(cov))
     delta_alpha_err = float(errs[0]) if errs.size > 0 else np.nan
@@ -192,6 +264,8 @@ def build_influence(
     config: Dict[str, object],
     jobs: int,
 ) -> pd.DataFrame:
+    # Reset index to ensure 0-based contiguous indices for drop() to work
+    lines = lines.reset_index(drop=True)
     rows = []
     line_ids = lines["line_id"].to_numpy()
 

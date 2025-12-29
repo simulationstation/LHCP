@@ -69,12 +69,18 @@ def _normalize_atomic_table(df: pd.DataFrame) -> pd.DataFrame:
             out["lambda0_ang"] = out["wavelength"]
         else:
             raise ValueError("Atomic table missing lambda0_ang/wavelength_aa/wavelength.")
-    if "q_cm1" not in out.columns and "q" in out.columns:
-        out["q_cm1"] = out["q"]
+    if "q_cm1" not in out.columns:
+        if "q_cm-1" in out.columns:
+            out["q_cm1"] = out["q_cm-1"]
+        elif "q" in out.columns:
+            out["q_cm1"] = out["q"]
     if "line_id" not in out.columns:
         out["line_id"] = [f"line_{i:04d}" for i in range(len(out))]
-    if "lambda0_unc_ang" not in out.columns and "wavelength_unc_aa" in out.columns:
-        out["lambda0_unc_ang"] = out["wavelength_unc_aa"]
+    if "lambda0_unc_ang" not in out.columns:
+        if "sigma_lambda0_ang" in out.columns:
+            out["lambda0_unc_ang"] = out["sigma_lambda0_ang"]
+        elif "wavelength_unc_aa" in out.columns:
+            out["lambda0_unc_ang"] = out["wavelength_unc_aa"]
     if "join_flag" not in out.columns:
         out["join_flag"] = "OK"
     out = out.sort_values("lambda0_ang").reset_index(drop=True)
@@ -303,7 +309,8 @@ def run_holistic(config: HolisticRunConfig, run_dir: Path, argv: List[str]) -> D
     baseline = pd.DataFrame()
     for setting in config.continuum_settings:
         line_df = _prepare_lines(spectrum, atomic, config, setting, z_guess)
-        line_df = line_df.merge(atomic[["line_id", "join_flag", "q_cm1", "lambda0_ang"]], on="line_id", how="left")
+        # Don't include lambda0_ang in merge - it's already in line_df from _prepare_lines
+        line_df = line_df.merge(atomic[["line_id", "join_flag", "q_cm1"]], on="line_id", how="left")
         line_df = line_df.sort_values("lambda0_ang")
         scored, gold = _score_gold(line_df, config)
         line_sets[setting.name] = gold
@@ -410,5 +417,10 @@ def run_holistic(config: HolisticRunConfig, run_dir: Path, argv: List[str]) -> D
         gating["continuum_stability"] = "FAIL: continuum sensitivity dominates"
 
     build_exec_summary(run_dir, result_payload, gating, summary)
-    (run_dir / "config_used.yaml").write_text(yaml.safe_dump(config.model_dump()))
+    # Convert config to dict with string paths for yaml serialization
+    config_dict = config.model_dump()
+    for key, value in config_dict.items():
+        if isinstance(value, Path):
+            config_dict[key] = str(value)
+    (run_dir / "config_used.yaml").write_text(yaml.safe_dump(config_dict))
     return result_payload

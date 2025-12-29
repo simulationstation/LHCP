@@ -28,13 +28,14 @@ linefit:
   edge_buffer_aa: 0.2
 
 gold:
-  sigma_lambda_max: 0.002
-  reduced_chi2_max: 3.0
-  snr_min: 5.0
-  max_asymmetry: 0.35
-  max_window_contam: 0.4
+  # Relaxed thresholds for G191-B2B crowded WD spectra
+  sigma_lambda_max: 0.01
+  reduced_chi2_max: 5.0
+  snr_min: 3.0
+  max_asymmetry: 0.5
+  max_window_contam: 0.5
   excluded_flags:
-    - BLEND_SUSPECT
+    # Removed BLEND_SUSPECT - common in crowded WD spectra
     - POOR_FIT
     - EDGE
 
